@@ -10,14 +10,12 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { Provider } from "react-redux";
-import { useColorScheme } from "@/hooks/useColorScheme";
 import { configureStore } from "@reduxjs/toolkit";
 import usersReducer from "./store/userSlice";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
