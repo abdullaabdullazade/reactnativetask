@@ -5,13 +5,22 @@ import Dropdown from "react-native-input-select";
 import { addUser, deleteUser, updateUser, datas } from "../store/userSlice";
 import { useDispatch } from "react-redux";
 import { router, useLocalSearchParams } from "expo-router";
+import { SelectList } from "react-native-dropdown-select-list";
+import DropDownPicker from "react-native-dropdown-picker";
 
 const addUser_ = () => {
   let { update, item } = useLocalSearchParams();
   if (item) item = JSON.parse(item);
   const [name, setName] = useState(update ? item.name : "");
   const [role, setRole] = useState(update ? item.role : "");
-  const [status, setStatus] = useState(update ? item.status : "");
+  const [status, setStatus] = useState(update ? item.status : "offline");
+
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    { label: "Online", value: "online" },
+    { label: "Offline", value: "offline" },
+  ]);
 
   const dispatch = useDispatch();
   return (
@@ -31,27 +40,18 @@ const addUser_ = () => {
           value={role}
           onChangeText={setRole}
         />
-
-        <Dropdown
-          label="Status"
-          labelStyle={{
-            fontSize: 15,
-            color: "black",
-          }}
-          placeholder="Select an option..."
-          options={[
-            { label: "Online", value: "online" },
-            { label: "Offline", value: "offline" },
-          ]}
-          selectedValue={status}
-          onValueChange={(value) => setStatus(value)}
-          primaryColor={"green"}
+        <DropDownPicker
+          open={open}
+          value={status}
+          items={items}
+          setOpen={setOpen}
+          setValue={setStatus}
+          setItems={setItems}
         />
       </View>
       <TouchableOpacity
-        className="border border-blue-500 m-2 h-12 rounded-full bg-blue-400 items-center justify-center"
+        className="border border-blue-500 m-2 h-12 rounded-full bg-blue-400 items-center justify-center "
         onPress={() => {
-          console.log(status);
           if (update) {
             dispatch(
               updateUser({

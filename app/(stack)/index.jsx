@@ -20,38 +20,41 @@ const RenderUsers = ({ item }) => {
   const dispatch = useDispatch();
 
   return (
-    <View className="border-b border-gray-500 rounded-full">
-      <View className="flex-row w-32 px-4 py-2  items-center ">
-        <Text className="w-16 ">{item.id}</Text>
-        <Text className="w-32 text-center">{item.name}</Text>
-        <Text className="w-48 text-center">{item.dataCreated}</Text>
-        <Text className="w-24 text-center">{item.role}</Text>
-        <Text className="w-24 text-center">{item.status}</Text>
-        <TouchableOpacity
-          onPress={() => {
-            router.push({
-              pathname: "./addUser",
-              params: { update: true, item: JSON.stringify(item)},
-            });
-          }}
-        >
-          <Feather name="settings" size={24} color="blue" className="mx-3" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            dispatch(deleteUser({ id: item.id }));
-          }}
-        >
-          <AntDesign name="delete" size={24} color="red" />
-        </TouchableOpacity>
+    <View className="flex-row border-b border-gray-500">
+      <View className="w-48 flex-row items-center px-4 py-2 bg-gray-100">
+        <Text className="w-16 font-bold">{item.id}</Text>
+        <Text className="w-32">{item.name}</Text>
       </View>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <View className="flex-row  px-4 py-2  items-center ">
+          <Text className="w-48 text-center">{item.dataCreated}</Text>
+          <Text className="w-24 text-center">{item.role}</Text>
+          <Text className="w-24 text-center">{item.status}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              router.push({
+                pathname: "./addUser",
+                params: { update: true, item: JSON.stringify(item) },
+              });
+            }}
+          >
+            <Feather name="settings" size={24} color="blue" className="mx-3" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(deleteUser({ id: item.id }));
+            }}
+          >
+            <AntDesign name="delete" size={24} color="red" />
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 };
 
 const index = () => {
   let datas_ = useSelector(datas);
-
 
   return (
     <SafeAreaView className="ml-2">
@@ -67,12 +70,14 @@ const index = () => {
           <Text className="text-gray-400">Add new user</Text>
         </TouchableOpacity>
       </View>
+      <View className="flex-row border-b border-gray-500">
+        <View className="w-48 flex-row px-4 py-2 bg-gray-100">
+          <Text className="w-16 font-bold text-2xl">#</Text>
+          <Text className="w-32 font-bold text-2xl">Name</Text>
+        </View>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <View>
-          <View className="flex-row px-4 py-2 border-b border-gray-500 ">
-            <Text className="w-16 font-bold text-2xl ">#</Text>
-            <Text className="w-32 font-bold text-2xl text-center">Name</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <View className="flex-row px-4 py-2">
             <Text className="w-48 font-bold text-2xl text-center">
               Data Created
             </Text>
@@ -80,14 +85,14 @@ const index = () => {
             <Text className="w-24 font-bold text-2xl text-center">Status</Text>
             <Text className="w-24 font-bold text-2xl text-center">Action</Text>
           </View>
-          <FlatList
-            data={datas_}
-            renderItem={({ item }) => (
-              <RenderUsers item={item} key={({ item }) => item.id} />
-            )}
-          />
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
+      <FlatList
+        data={datas_}
+        renderItem={({ item }) => (
+          <RenderUsers item={item} key={({ item }) => item.id} />
+        )}
+      />
     </SafeAreaView>
   );
 };
