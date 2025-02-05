@@ -4,8 +4,9 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  Animated,
 } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import "../../global.css";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -13,7 +14,9 @@ import { deleteUser, datas } from "../store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Feather from "@expo/vector-icons/Feather";
 import { router } from "expo-router";
-const RenderUsers = ({ item }) => {
+
+
+const RenderUsers = ({ item, scrollX }) => {
   if (!item) {
     return null;
   }
@@ -25,7 +28,12 @@ const RenderUsers = ({ item }) => {
         <Text className="w-16 font-bold">{item.id}</Text>
         <Text className="w-32">{item.name}</Text>
       </View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      <Animated.ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        scrollEnabled={false}
+        contentOffset={{ x: scrollX }} //x istiqametine scroll edir
+      >
         <View className="flex-row  px-4 py-2  items-center ">
           <Text className="w-48 text-center">{item.dataCreated}</Text>
           <Text className="w-24 text-center">{item.role}</Text>
@@ -48,13 +56,14 @@ const RenderUsers = ({ item }) => {
             <AntDesign name="delete" size={24} color="red" />
           </TouchableOpacity>
         </View>
-      </ScrollView>
+      </Animated.ScrollView>
     </View>
   );
 };
 
 const index = () => {
   let datas_ = useSelector(datas);
+  const scrollX = useRef(new Animated.Value(0)).current;
 
   return (
     <SafeAreaView className="ml-2">
@@ -76,7 +85,14 @@ const index = () => {
           <Text className="w-32 font-bold text-2xl">Name</Text>
         </View>
 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+            { useNativeDriver: false }
+          )}
+        >
           <View className="flex-row px-4 py-2">
             <Text className="w-48 font-bold text-2xl text-center">
               Data Created
@@ -90,7 +106,11 @@ const index = () => {
       <FlatList
         data={datas_}
         renderItem={({ item }) => (
-          <RenderUsers item={item} key={({ item }) => item.id} />
+          <RenderUsers
+            item={item}
+            scrollX={scrollX}
+            key={({ item }) => item.id}
+          />
         )}
       />
     </SafeAreaView>
