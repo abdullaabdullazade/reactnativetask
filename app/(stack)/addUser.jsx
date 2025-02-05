@@ -1,11 +1,9 @@
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Dropdown from "react-native-input-select";
-import { addUser, deleteUser, updateUser, datas } from "../store/userSlice";
+import { addUser, updateUser } from "../store/userSlice";
 import { useDispatch } from "react-redux";
 import { router, useLocalSearchParams } from "expo-router";
-import { SelectList } from "react-native-dropdown-select-list";
 import DropDownPicker from "react-native-dropdown-picker";
 
 const addUser_ = () => {
@@ -16,7 +14,6 @@ const addUser_ = () => {
   const [status, setStatus] = useState(update ? item.status : "offline");
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
   const [items, setItems] = useState([
     { label: "Online", value: "online" },
     { label: "Offline", value: "offline" },

@@ -5,14 +5,14 @@ import {
   ScrollView,
   FlatList,
 } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import "../../global.css";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { addUser, deleteUser, updateUser, datas } from "../store/userSlice";
+import { deleteUser, datas } from "../store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Feather from "@expo/vector-icons/Feather";
-import { router, useFocusEffect } from "expo-router";
+import { router } from "expo-router";
 const RenderUsers = ({ item }) => {
   if (!item) {
     return null;
